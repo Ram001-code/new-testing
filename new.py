@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 # Function to generate a date string in ISO 8601 format
 def generate_commit_date(days_ago):
     date = datetime.now() - timedelta(days=days_ago)
-    return date.strftime('%Y-%m-%dT%H:%M:%S')
+    return date.strftime('%Y-%m-%d %H:%M:%S')  # Use space instead of 'T' to avoid Git issues
 
 # Loop through a range of days (e.g., 1 to 59 days ago)
 for i in range(1, 60):
@@ -24,8 +24,12 @@ for i in range(1, 60):
         # Generate the commit date for the current day in the loop
         commit_date = generate_commit_date(i)
 
+        # Print the commit date for debugging
+        print(f"Committing with date: {commit_date}")
+
         # Commit the changes with the generated date
-        os.system(f'git commit --date="{commit_date}" -m "Commit {i} days ago"')
+        commit_command = f'git commit --date="{commit_date}" -m "Commit {i} days ago"'
+        os.system(commit_command)
 
 # Push all commits to the remote repository
 os.system('git push -u origin main')
